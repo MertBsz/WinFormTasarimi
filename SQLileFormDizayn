@@ -1,0 +1,111 @@
+Imports System.ComponentModel.DataAnnotations
+Imports System.Data.SqlClient
+Public Class Form1
+    Dim cmd As New SqlCommand
+    Dim cn As New SqlConnection
+    Dim dr As SqlDataReader
+    Dim Id, Pro_Id, X, Y, Char_Length, Default_Value, Textdb, Password_Char, Activation, Tab_Index, Lcr, Form_Style As String
+    Dim Char_Size, Length, Heightdb, Tip As Integer
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Anchor = AnchorStyles.Bottom
+
+        cn.ConnectionString = "Data Source=SERVER ADI; Initial Catalog=Veritabanı Adı; Integrated Security=True"
+        cmd.CommandText = "select * from Tablo_Adı"
+        cmd.Connection = cn
+        cn.Open()
+        dr = cmd.ExecuteReader
+
+        Do While dr.Read()
+            Id = dr("Id")
+            Pro_Id = dr("Pro_Id")
+            Tip = dr("Tip")
+            X = dr("X")
+            Y = dr("Y")
+            Length = dr("Length")
+            Heightdb = dr("Height")
+            Char_Length = dr("Char_Length")
+            Char_Size = dr("Char_Size")
+            Textdb = dr("Textdb")
+            Password_Char = dr("Password_Char")
+            Activation = dr("Activation")
+            Tab_Index = dr("Tab_Index")
+            Lcr = dr("Lcr")
+            Form_Style = dr("Form_Style")
+
+            Dim LabelDizi As Label
+            Dim textboxDizi As TextBox
+            Dim radioButtonDizi As RadioButton
+            Dim TarihDizi As Label
+            Dim butonDizi As Button
+
+            LabelDizi = New Label
+            TarihDizi = New Label
+            butonDizi = New Button
+            textboxDizi = New TextBox
+            radioButtonDizi = New RadioButton
+
+            Select Case Tip
+                Case Is = "1"
+                    Me.Controls.Add(LabelDizi)
+                    LabelDizi.Location = New Point(X, Y)
+                    LabelDizi.Size = New Size(Length, Heightdb)
+                    LabelDizi.Font = New Font("Arial", Char_Size)
+                    LabelDizi.Text = Textdb
+                    LabelDizi.TabIndex = Tab_Index
+
+                Case Is = "2"
+
+                    Me.Controls.Add(textboxDizi)
+                    textboxDizi.Location = New Point(X, Y)
+                    textboxDizi.Size = New Size(Length, Heightdb)
+                    textboxDizi.MaxLength = Char_Length
+                    textboxDizi.Font = New Font("Arial", Char_Size)
+                    textboxDizi.Text = Textdb
+                    textboxDizi.TabIndex = Tab_Index
+                    If Activation = 1 Then
+                        textboxDizi.Enabled = True
+                    Else
+                        textboxDizi.Enabled = False
+                    End If
+
+                Case Is = "3"
+
+                    Me.Controls.Add(radioButtonDizi)
+                    radioButtonDizi.Location = New Point(X, Y)
+                    radioButtonDizi.Size = New Size(Length, Heightdb)
+                    radioButtonDizi.Font = New Font("Arial", Char_Size)
+                    radioButtonDizi.Text = Textdb
+                    radioButtonDizi.TabIndex = Tab_Index
+                    radioButtonDizi.Checked = True
+                    If Activation = 1 Then
+                        radioButtonDizi.Enabled = True
+                    Else
+                        radioButtonDizi.Enabled = False
+                    End If
+
+                Case Is = "4"
+
+                    Me.Controls.Add(TarihDizi)
+                    TarihDizi.Location = New Point(X, Y)
+                    TarihDizi.Size = New Size(Length, Heightdb)
+                    TarihDizi.TabIndex = Tab_Index
+                    TarihDizi.Text = DateTime.Now.ToString(Form_Style)
+
+                Case Is = "5"
+
+                    Me.Controls.Add(butonDizi)
+                    butonDizi.Location = New Point(X, Y)
+                    butonDizi.Size = New Size(Length, Heightdb)
+                    butonDizi.TabIndex = Tab_Index
+                    butonDizi.Text = Textdb
+                    butonDizi.Enabled = Activation
+                    butonDizi.BackColor = SystemColors.HotTrack
+            End Select
+        Loop
+        dr.Close()
+        cn.Close()
+
+    End Sub
+
+End Class
